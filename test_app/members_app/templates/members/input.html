@@ -1,0 +1,6 @@
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="user_input" placeholder="Введіть ім'я" required>
+    <button type="submit"><a href="{% url 'page_show' %}">Biдправити</a></button>
+    <button type="submit>"><a href="{% url 'get_session' %}">Сесія</a></button>
+</form>

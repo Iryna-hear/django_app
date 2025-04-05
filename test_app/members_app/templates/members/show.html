@@ -1,0 +1,5 @@
+<form method="post">
+    {% csrf_token %}
+<p>Ввід користувача: {{ user_input }}</p>
+<a href="{% url 'page_input' %}">Повернутися на сторінку вводу</a>
+</form>
