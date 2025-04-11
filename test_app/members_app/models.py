@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class Members(models.Model):
       title = models.CharField(max_length=100)
@@ -8,6 +11,7 @@ class Members(models.Model):
       created_at = models.DateTimeField(auto_now_add=True)
       updated_at = models.DateTimeField(auto_now=True)
       completed = models.BooleanField(default=False)
+      
 
 
 def __str__(self):
