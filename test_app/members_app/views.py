@@ -19,4 +19,6 @@ def get_session(request):
     return HttpResponse(f"user_session: {request.session['user_session']}")
 
    
+def tags_page(request):
 
+    return render(request, 'members/tags.html')

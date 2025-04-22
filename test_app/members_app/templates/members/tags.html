@@ -1,0 +1,10 @@
+{% load custom_tags from members_app %}
+<!DOCTYPE html>
+<html>
+    <body>
+<p>Data is today: {% data_today %}</p>
+
+<p>{{ 'It's a long text must be cut'| cut_sentence:15 }}</p>
+        
+    </body>
+</html>> 
