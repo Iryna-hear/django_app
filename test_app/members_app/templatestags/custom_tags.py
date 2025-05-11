@@ -13,3 +13,10 @@ def cut_sentence(value, max_length):
     if len(value) > max_length:
         return value[:max_length] + '...'
     return value
+
+
+@register.inclusion_tag('adress_list.html')
+def show_adress_list(adress_list):
+    return {'adress_list': adress_list}
+
+

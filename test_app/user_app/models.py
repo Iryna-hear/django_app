@@ -68,4 +68,36 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}".strip()
+    
+
+class UserAdress(models.Model):
+        user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='address')
+        street = models.CharField(max_length=255, verbose_name='Street')
+        city = models.CharField(max_length=100, verbose_name='City')
+        postal_code = models.CharField(max_length=20, verbose_name='Postal Code')
+        country = models.CharField(max_length=100, verbose_name='Country')
+        
+        class Meta:
+            verbose_name = 'User Address'
+            verbose_name_plural = 'User Addresses'
+        
+        def __str__(self):
+            return f"{self.street}, {self.city}, {self.postal_code}, {self.country}"
+        
+class UserPayment(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='payment')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Amount')
+    payment_date = models.DateTimeField(default=timezone.now, verbose_name='Payment Date')
+    payment_method = models.CharField(max_length=50, choices=[
+        ('credit_card', 'Credit Card'),
+        ('paypal', 'PayPal'),
+        ('cash', 'Cash'),
+        ('bank_transfer', 'Bank Transfer')
+    ], default='credit_card', verbose_name='Payment Method')
+    
+
+    
+    def __str__(self):
+        return f"Payment info for {self.user.email} - {self.amount}"
+        
 

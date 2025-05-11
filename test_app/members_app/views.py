@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from members_app.models import Members
+from datetime import datetime
 
 def page_input(request):
     if request.method == 'POST':
@@ -20,5 +21,12 @@ def get_session(request):
 
    
 def tags_page(request):
+    context = {
+        'data_today': datetime.now().strftime("%Y-%m-%d"),
+        'cut_sentence': lambda value, max_length: value[:max_length] + '...' if len(value) > max_length else value,
+        'adress_list': ['123 Main St', '456 Elm St', '789 Oak St'],
+        'members': Members.objects.all(),
+    }
+    return render(request, 'members/tags.html', context)
 
-    return render(request, 'members/tags.html')
+
