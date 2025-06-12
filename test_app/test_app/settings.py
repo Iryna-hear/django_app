@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-7pja!a1&hw270fgr#w#v-65*@jrrx&qncg7_3#aj_ty6)#1@01'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,9 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     'members_app',
     'courses_app',
     'user_app',
+    'tasks',
+    'tasks_restfull',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +136,20 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user_app.User'
+
+STATIK_ROOT = BASE_DIR / 'static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'tasks_restfull.authentication.CustomJWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+TOKEN_TTL = {
+    "minutes": 2
+}
+
+JWT_SECRET = SECRET_KEY

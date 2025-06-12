@@ -107,12 +107,16 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('email', 'full_name','phone_number', 'preferred_language')
+    list_display = ('email', 'full_name','phone_number','is_active', 'preferred_language')
     list_filter = ('preferred_language', 'is_active')
     search_fields = ('email', 'phone_number', 'first_name', 'last_name')
     ordering = ('email',)
+    actions = ['deactivate_user', 'activate_user']
+
+
+
     fieldsets = (
-        (None, {'fields': ('email', )}),
+        (None, {'fields': ('email', 'is_active',)}),
         ('Change Password', {'fields': ('new_password1', 'new_password2'), 'classes': ('collapse',)}),
        
         ('Personal Info', {
@@ -123,7 +127,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'phone_number', 'password1', 'password2', 'first_name', 'last_name', 'date_of_birth')
+            'fields': ('email', 'is_active','phone_number', 'password1', 'password2', 'first_name', 'last_name', 'date_of_birth')
         }),
     )
 
@@ -131,3 +135,23 @@ class UserAdmin(BaseUserAdmin):
         return obj.full_name
     full_name.short_description = 'Full Name'
 
+
+    def payment_total(self, obj):
+        total = sum(payment.amount for payment in obj.userpayment_set.all())
+        return f'{total} UAH'
+    payment_total.short_description = 'Total Payments'
+
+    def deactivate_user(self, request, queryset):
+        update = queryset.update(is_active=False)
+
+        self.message_user(request, f"{queryset.count()} users deactivated.")
+    deactivate_user.short_description = "Deactivate selected users"
+
+    def activate_user(self, request, queryset):
+        update = queryset.update(is_active=True)
+
+        self.message_user(request, f"{queryset.count()} users activated.")
+    activate_user.short_description = "Activate selected users"
+
+    class Media:
+        js = ('admin/js/admin_user.js',)
